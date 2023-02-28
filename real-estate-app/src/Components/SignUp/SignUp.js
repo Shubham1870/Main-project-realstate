@@ -1,10 +1,32 @@
 import React from "react"
 import { useState } from "react"
+import {useNavigate,Link} from "react-router-dom"
 import "./SignUp.css"
+const url="http://localhost/8080"
 const SignUp = () => {
-    const [email, setemail] = useState("")
-    const [password, setpassword] = useState("")
-    const [cnfpassword, setcnfpassword] = useState("")
+    const [userdetail,setuserdetail]=useState({
+        email:"",
+        password:"",
+        confirmpassword:""
+    })
+    navigate=useNavigate()
+    const handlechange=(e)=>{
+       setuserdetail({ ...userdetail, [e.target.name]: e.target.value })
+    }
+    const handlesubmit=async(e)=>{
+        e.preventDefault()
+        const data=await fetch(`${url}/signup`,{
+            method: "POST",
+            headers: {
+              Accept: "application/json",
+              "Content-Type": "application/json",
+            },
+            body:JSON.stringify(userdetail),
+}).then((data)=>data.json())
+if(data.status==="success"){
+    navigate("/signin")
+}
+    }
     return (
         <>
             <div>
@@ -12,27 +34,27 @@ const SignUp = () => {
                     <h1 id="heading">Logo</h1>
                     <h6 id="heading-2">Create New Account</h6>
                     <div id="Signup-form">
-                        <form >
+                        <form onSubmit={handlesubmit}>
                         <div><input
                                 className="Signup-input"
                                 type="email"
                                 placeholder="Email ID"
-                                value={email}
-                                onChange={(e) => setemail(e.target.value)}
+                                
+                                onChange={handlechange}
                             /></div>
                             <div><input
                                 className="Signup-input"
                                 type="password"
                                 placeholder="Password"
-                                value={password}
-                                onChange={(e) => setpassword(e.target.value)}
+                                
+                                onChange={handlechange}
                             /></div>
                             <div><input
                                 className="Signup-input"
                                 type="password"
                                 placeholder="Confirm Password"
-                                value={cnfpassword}
-                                onChange={(e) => setcnfpassword(e.target.value)}
+                           
+                                onChange={handlechange}
 
                             /></div>
                             <div>

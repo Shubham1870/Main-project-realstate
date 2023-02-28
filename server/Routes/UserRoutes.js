@@ -82,7 +82,7 @@ router.post("/signin", async (req, res) => {
         status: "failed",
         message: "user not registered"
       })
-    }/*
+    }
     bcrypt.compare(password, data.password, function (err, result) {
       if (err) {
         res.status(400).json({
@@ -93,7 +93,7 @@ router.post("/signin", async (req, res) => {
       if (result) {
         const token = jwt.sign({
           exp: Math.floor(Date.now() / 1000) + (60 * 60),
-          data: user_id
+          payload: data._id
         }, process.env.TOKEN_KEY);
         res.status(200).json({
           status: "success",
@@ -107,7 +107,7 @@ router.post("/signin", async (req, res) => {
         })
       }
     })
-  }*/ }catch (error) {
+   }catch (error) {
     res.status(400).json({
       status: "failed",
       message: error.message
